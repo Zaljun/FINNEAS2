@@ -1,0 +1,6 @@
+REQUIREMENTS
+
+flask
+pandas
+websocket-client
+pyrebase
