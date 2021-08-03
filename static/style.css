@@ -1,0 +1,166 @@
+
+body {
+	height: 100%;
+	width: 100%;
+	padding:0;
+	margin:0;
+	background-repeat: no-repeat;
+	background-size: cover;
+	font-family: 'Arial';
+}
+
+#home {
+	position:fixed;
+	padding:0;
+	margin:0;
+	background-image:url(homephoto3.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+
+#news {
+	padding:20px;
+	margin:0;
+	background-image:url(homephoto8.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: table;
+	height: 100%;
+	width: 100%;
+
+}
+
+.landing-text p {
+	font-size: 30px;
+	font-weight: 200;
+	font-family: 'Arial';
+	color:white;
+}
+
+.button
+{
+    color:white;
+}
+
+.landing-text h1 {
+	text-align: center;
+	font-size: 500%;
+	font-weight: 700;
+	color:white;
+    text-shadow:
+        0.03em 0 black,
+        0 0.03em black,
+        -0.03em 0 black,
+        0 -0.03em black,
+        -0.03em -0.03em black,
+        -0.03em 0.03em black,
+        0.03em -0.03em black,
+        0.03em 0.03em black;
+}
+
+.tctable {
+	width:75%;
+	background-color:white;
+}
+
+.pull-right {
+    position:absolute;
+    right:50px;
+}
+
+.tctable, th, td {
+	margin-left: auto;
+	margin-right: auto;
+
+}
+
+.TCtitle {
+	text-align: center;
+	font-size: 600%;
+	font-weight: 700;
+}
+
+
+.dataBox {
+	position: fixed;
+	border: 3px solid #73AD21;
+	width: 700px;
+	height: 400px;
+	top: 180px;
+	left: 20px;
+}
+
+.analysisBox {
+    vertical-align: top;
+    margin-left:5px;
+}
+
+.analysischart {
+	display: inline-block;
+	vertical-align: middle;
+	width: 500px;
+}
+
+.news {
+	width: 100%;
+	height: 140px;
+	bottom: 170px;
+}
+
+.info {
+	position: fixed;
+	width: 150px;
+	height: 140px;
+	bottom: 20px;
+}
+
+.StockButtons
+{
+    right: 100px;
+}
+
+.StockButtons
+{
+    right: 100px;
+}
+
+.downtick
+{
+	color:red;
+}
+
+.uptick
+{
+	color:green;
+}
+
+.Row {
+	display: table;
+	width: 100%; /*Optional*/
+    border-spacing: 10px; /*Optional*/
+}
+.Column {
+    display: table-cell;
+}
+
+
+.parent {
+	display:flexbox;
+	flex-direction:row;
+	width:100%;
+  }
+.float-left {
+	padding: 10px;
+	flex: 1 1 20px;
+	align-content: flex-end;
+}
+table {
+	border:none;
+}
+
+.everything {
+	padding:10px;
+}
