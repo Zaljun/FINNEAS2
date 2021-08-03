@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Top Companies{% endblock %}
+    {% block content %}
+
+<div id="topcompanies">
+<div class="TCtitle">
+<h1>Major Companies</h1>
+</div>
+
+<p style="text-align:center"> Last retrieved: {{ data['time'] }}<p>
+  <table class="tctable">
+          <thead>
+              <tr>
+                  {% for col in data['colnames'] %}
+                  <th>{{ col }}</th>
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+              {% for record in data['records'] %}
+              <tr>
+                  {% for col in data['colnames'] %}
+
+                    {% if col == 'change' or col == 'percent change' %}
+                        
+                        {% if record[col] < 0 %}
+                        <td style='color:red'> {{ record[col] }}</td>
+                        {% else %}
+                        <td style='color:green'> {{ record[col] }}</td>
+                        {% endif %}
+                    {% else %}
+                    <td>{{ record[col] }}</td>
+                    {% endif %}
+                  
+                  {% endfor %}  
+              </tr>
+              {% endfor %}
+          </tbody>
+  </table>
+
+</div>
+    {% endblock %}

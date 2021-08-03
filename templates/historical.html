@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{stock}}{% endblock %}
+{% block content %}
+<div class="everything">
+<div class="StockButtons">
+    <a class="btn btn-primary" href="/stocks/{{stock}}/overview" role="button">Overview</a>
+    <a class="btn btn-primary" href="/stocks/{{stock}}/historical" role="button">Historical Data</a>
+    <a class="btn btn-primary" href="/stocks/{{stock}}/analysis" role="button">Data Analysis</a>
+
+</div>
+
+
+<h1> Historical Data </h1>
+
+<table>
+    <thead>
+        <tr>
+            {% for col in data['colnames'] %}
+            <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in data['records'] %}
+        <tr>
+            {% for col in data['colnames'] %}
+            <td>{{ record[col] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

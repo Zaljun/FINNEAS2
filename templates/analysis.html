@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}{{stock}}{% endblock %}
+{% block content %}
+
+<div class="everything">
+
+<div class="StockButtons">
+    <a class="btn btn-primary" href="/stocks/{{stock}}/overview" role="button">Overview</a>
+    <a class="btn btn-primary" href="/stocks/{{stock}}/historical" role="button">Historical Data</a>
+    <a class="btn btn-primary" href="/stocks/{{stock}}/analysis" role="button">Data Analysis</a>
+</div>
+
+<h1>Charts</h1>
+
+<form action='/stocks/{{stock}}/analysis' method='POST'>
+  <input type="radio" id="day" name="timespan" value="day">
+  <label for="day">Day</label><br>
+  <input type="radio" id="month" name="timespan" value="month">
+  <label for="month">Month</label><br>  
+  <input type="radio" id="year" name="timespan" value="year">
+  <label for="year">Year</label>
+  <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Submit">
+</form> 
+
+<div style="width:1000px">
+  <canvas id="chart"></canvas>
+</div>
+<div>
+  Bar Type:
+  <select id="type">
+    <option value="candlestick" selected>Candlestick</option>
+    <option value="ohlc">OHLC</option>
+  </select>
+  
+  <button id="update">Update</button>
+  
+</div class='analysisBox'>
+<script src="https://cdn.jsdelivr.net/npm/luxon@1.24.1"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.0-beta.3/dist/chart.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
+		<script src="/static/chartjs-chart-financial.js" type="text/javascript"></script>
+<script>
+            
+  var barCount = "{{length}}";
+  var initialDateStr = "{{first_date}}";
+  var timespanData = "{{timespan}}";
+  var chartData = {{chart_data | safe }}
+  
+  var ctx = document.getElementById('chart').getContext('2d');
+  ctx.canvas.width = 1200;
+  ctx.canvas.height = 500;
+  var chart = new Chart(ctx, {
+    type: 'candlestick',
+    data: {
+      datasets: [{
+        label: "{{stock}}",
+        data: getData(initialDateStr, barCount)
+      }]
+    } 
+  });
+  
+  function getData(dateStr, count) {
+    var date = luxon.DateTime.fromISO(dateStr).toLocal();
+    var data = [];
+    var index = 0;
+          
+    while (data.length < count) {
+      
+      if (timespanData == "day") {
+
+        date = date.plus({minutes: 1});
+        if (date.weekday <= 5) {
+    
+          var temp = {
+            t: date.valueOf(),
+            o: chartData[index].Open,
+            h: chartData[index].High,
+            l: chartData[index].Low,
+            c: chartData[index].Close
+          }
+          data.push(temp);
+          index = index + 1;
+        }
+      } else {
+
+        date = date.plus({days: 1});
+        if (date.weekday <= 5) {
+    
+          var temp = {
+            t: date.valueOf(),
+            o: chartData[index].Open,
+            h: chartData[index].High,
+            l: chartData[index].Low,
+            c: chartData[index].Close
+          }
+          data.push(temp);
+          index = index + 1;
+        }
+
+      }
+
+
+      
+    }
+    return data;
+  }
+  
+  var update = function() {
+    var dataset = chart.config.data.datasets[0];
+    var type = document.getElementById('type').value;
+    dataset.type = type;
+    var scaleType = 'linear';
+    chart.config.options.scales.y.type = scaleType;
+    var colorScheme = 'muted';
+    var border = 'true';
+  
+    chart.update();
+  };
+  
+  document.getElementById('update').addEventListener('click', update);
+  
+          </script>
+</div>
+{% endblock %}

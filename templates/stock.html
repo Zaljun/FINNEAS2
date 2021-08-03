@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block title %}{{stock}}{% endblock %}
+{% block content %}
+
+<div class="everything">
+
+<div class="StockButtons">
+  <a class="btn btn-primary" href="/stocks/{{stock}}/overview" role="button">Overview</a>
+  <a class="btn btn-primary" href="/stocks/{{stock}}/historical" role="button">Historical Data</a>
+  <a class="btn btn-primary" href="/stocks/{{stock}}/analysis" role="button">Data Analysis</a>
+</div>
+
+<div class="parent">
+
+  <div class="float-left">
+    <h3 > {{ data['name'] }}</h3>
+    <h1> {{ data['price'] }}</h1>
+    {% if data['change'] < 0 %}
+    <h2 style='color:red'> {{ data['change'] }} ({{ data['percent change'] }}%)</h2>
+    {% else %}
+    <h2 style='color:green'> {{ data['change'] }} ({{ data['percent change'] }}%)</h2>
+    {% endif %}
+    <p> Last retrieved: {{ data['last retrieved time'] }}<p>
+
+    <form action='/stocks/{{stock}}/overview' method='POST'>
+        <input type="radio" id="day" name="timespan" value="day">
+        <label for="day">Day</label><br>
+        <input type="radio" id="month" name="timespan" value="month">
+        <label for="month">Month</label><br>  
+        <input type="radio" id="year" name="timespan" value="year">
+        <label for="year">Year</label>
+        <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Submit">
+    </form> 
+  </div>
+
+
+
+<div class="float-left">
+  <canvas id="myChart" width="700" height="400"></canvas>
+  <script>
+    // Global parameters:
+    // do not resize the chart canvas when its container does (keep at 600x400px)
+    Chart.defaults.global.responsive = false;
+    // define the chart data
+    var chartData = {
+      labels : [{% for item in labels %}
+                 "{{item}}",
+                {% endfor %}],  
+      datasets : [{
+          label: '{{ data.name }}',
+          fill: true,
+          lineTension: 0.1,
+          backgroundColor: "rgba(75,192,192,0.4)",
+          borderColor: "rgba(75,192,192,1)",
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          pointBorderColor: "rgba(75,192,192,1)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 1,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(75,192,192,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          data : [{% for item in values %}
+                    {{item}},
+                  {% endfor %}],
+          spanGaps: false
+      }]
+    }
+
+    // get chart canvas
+    var ctx = document.getElementById("myChart").getContext("2d");
+
+    // create the chart using the chart canvas
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+    });
+  </script>
+
+</div>
+
+
+<div class="float-left">
+  <table>
+		<tbody>
+			{% for name,record in data['overview_data'].items() %}
+			<tr>
+				<td>
+					<b>{{ name }}</b>
+        </td>
+        <td>
+					{{ record }}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+</div> 
+
+</div>
+
+<div class="news">
+  <h2>{{company_name}} News</h2>
+  <table>
+		<tbody>
+			{% for record in data['news']['records'] %}
+			<tr>
+				{% for col in data['news']['colnames'] %}
+				<td>
+					{% if col == 'Title' %}
+					<a href="{{record['support']['URL']}}" target="_blank">
+					{{ record['data'][col] }}
+					</a>
+					{% else %}
+					{{ record['data'][col] }}
+					{% endif %}
+					
+				</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+</div>
+
+{% endblock %}

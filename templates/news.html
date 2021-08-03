@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}News page{% endblock %}
+		{% block content %}	
+		
+<div id="news">
+<h1>News Feed</h1>
+<table>
+	<tbody>
+		{% for record in data['records'] %}
+		<tr>
+			{% for col in data['colnames'] %}
+			
+			<td>
+				{% if col == 'Title' %}
+				<a href="{{record['support']['URL']}}" target="_blank">
+				{{ record['data'][col] }}
+				</a>
+				{% else %}
+				{{ record['data'][col] }}
+				{% endif %}
+			</td>
+			{% endfor %}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+</div>
+		{% endblock %}
